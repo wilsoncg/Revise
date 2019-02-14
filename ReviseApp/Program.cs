@@ -10,12 +10,16 @@ namespace ReviseApp
     {
         static void Main(string[] args)
         {
-            var f1 = fib().Take(10);
-            Console.WriteLine(string.Join(",", f1));
+            Output(fib().Take(10));
             Console.WriteLine();
-            var f2 = Library.fibs.Take(10);
-            Console.WriteLine(string.Join(",", f2));
+            Output(Library.fibs.Take(10));
+
             Console.ReadKey();
+        }
+
+        static void Output(IEnumerable<int> seq)
+        {
+            Console.WriteLine(string.Join(",", seq));
         }
 
         static IEnumerable<int> fib()
