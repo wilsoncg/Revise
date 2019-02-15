@@ -36,5 +36,27 @@ namespace ReviseApp
                 yield return second;
             }
         }
+
+        static IEnumerable<(int coin, int howMany)> makeChange(int amount)
+        {
+            var coins = new[] { 1, 2, 5, 10, 20, 50, 100 };
+            var largestCoins = coins.OrderByDescending(x => x);
+
+            Enumerable
+                    .Empty<(int coin, int howMany)>()
+                    .Aggregate(amount, (a, b) => {
+                        var largest = largestCoins.First(x => (x <= amount));
+                        return ()
+                    });
+
+            var running = amount;
+            while(true)
+            {
+                var coin = largestCoins.First(x => (x <= running));
+                var running = running - coin;
+                
+                yield return (coin, 1);
+            }
+        }
     }
 }
