@@ -13,7 +13,7 @@ namespace ReviseApp
             Output(fib().Take(10));
             Output(Library.fibs.Take(10));
 
-            Output(makeChange(213));
+            Console.WriteLine("Make change for 213p = " + Output(makeChange(213)));
 
             Console.WriteLine(TriangleArea(21, 32, 87));
 
@@ -25,13 +25,13 @@ namespace ReviseApp
             Console.WriteLine(string.Join(",", seq));
         }
 
-        static void Output(IEnumerable<(int, int)> seq)
+        static string Output(IEnumerable<(int, int)> seq)
         {
             var r =
                 seq.Aggregate(
                 "",
                 (a, b) => $"{a}({b.Item1}p, {b.Item2})");
-            Console.WriteLine(r);
+            return r;
         }
 
         static IEnumerable<int> fib()
@@ -70,12 +70,6 @@ namespace ReviseApp
                         var left = acc.Remaining;
                         if (left == 0)
                             return acc;
-
-                        if(coin == left)
-                            return acc.Add((coin, 1), 0);
-
-                        if ((left % coin) == 0)
-                            return acc.Add((coin, (left / coin)), 0);
 
                         return acc.Add(
                             (coin, (left / coin)),
