@@ -15,6 +15,8 @@ namespace ReviseApp
 
             Output(makeChange(213));
 
+            Console.WriteLine(TriangleArea(21, 32, 87));
+
             Console.ReadKey();
         }
 
@@ -82,6 +84,22 @@ namespace ReviseApp
                     (a) => a.Change)
                     .Where(x => x.howMany >= 1);
             return r;
+        }
+
+        static double CircleArea(double radius)
+        {
+            return Math.PI * Math.Pow(radius, 2);
+        }
+
+        static double DegToRad(double degree)
+        {
+            // 1 rad = 180/pi
+            return degree * (Math.PI / 180);
+        }
+
+        static double TriangleArea(double a, double b, double C)
+        {
+            return (0.5 * a * b * Math.Sin(DegToRad(C)));
         }
     }
 
