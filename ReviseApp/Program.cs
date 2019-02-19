@@ -19,7 +19,9 @@ namespace ReviseApp
             Console.WriteLine("TapeEquilibrium "+ revise2.TapeEquilibrium(new[] { 3,1,2,4,3 }));
             Console.WriteLine("FrogJump " + revise2.FrogJump(10, 85, 30));
             Console.WriteLine("FrogJump " + revise2.FrogJump(10, 10, 1));
-            Console.WriteLine("PermMissingElem " + revise2.PermMissingElem(new[] { 2, 3, 1 , 5 }));
+            Console.WriteLine("PermMissingElem " + revise2.PermMissingElem(new[] { 2, 3, 1, 5 }));
+            Console.WriteLine("MissingInt " + revise2.MissingInteger(new[] { 2 }));
+            Console.WriteLine("MissingInt " + revise2.MissingInteger(new[] { -1, -3 }));
 
             Console.ReadKey();
         }
