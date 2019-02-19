@@ -8,6 +8,22 @@ namespace ReviseApp
 {
     public class Revise2
     {
+        // https://app.codility.com/programmers/lessons/3-time_complexity/frog_jmp/
+        public double FrogJump(int x, int y, int d)
+        {
+            var r = (y - x) / d;
+            if ((r * d + x) < y)
+                return r + 1;
+
+            return r;
+        }
+
+        // https://app.codility.com/programmers/lessons/3-time_complexity/perm_missing_elem/
+        public int PermMissingElem(int[] A)
+        {
+            return Enumerable.Range(1, A.Length + 2).Except(A).First();
+        }
+
         // https://codility.com/demo/take-sample-test/tape_equilibrium
         public int TapeEquilibrium(int[] A)
         {
@@ -30,7 +46,7 @@ namespace ReviseApp
                     if (difference < a.min)
                         a.min = difference;
 
-                    Console.WriteLine($"|{a.Left} - {a.Right}|={difference}");
+                    //Console.WriteLine($"|{a.Left} - {a.Right}|={difference}");
                     return a;
                 },
                 a => a.min);

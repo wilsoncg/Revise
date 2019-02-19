@@ -16,7 +16,10 @@ namespace ReviseApp
             Console.WriteLine(Revise1.TriangleArea(21, 32, 87));
 
             var revise2 = new Revise2();
-            Console.WriteLine(revise2.TapeEquilibrium(new[] { 3,1,2,4,3 }));
+            Console.WriteLine("TapeEquilibrium "+ revise2.TapeEquilibrium(new[] { 3,1,2,4,3 }));
+            Console.WriteLine("FrogJump " + revise2.FrogJump(10, 85, 30));
+            Console.WriteLine("FrogJump " + revise2.FrogJump(10, 10, 1));
+            Console.WriteLine("PermMissingElem " + revise2.PermMissingElem(new[] { 2, 3, 1 , 5 }));
 
             Console.ReadKey();
         }
