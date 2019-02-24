@@ -26,6 +26,17 @@ namespace ReviseApp
                     s.RemoveAt(s.Count() - 1);                    
                 }
                 s.Add(new PointWithIndex { Point = A[i], index = i });
+
+                // compare last point
+                if(i+1 == A.Count())
+                {
+                    var angle = AngleBetween3Points(
+                        s[s.Count() - 2].Point,
+                        s[s.Count() - 1].Point,
+                        A[0]);
+                    if(angle < 180)
+                        notInConvexHull.Add(s[s.Count() - 1].index);
+                }
             }
 
             return notInConvexHull;
