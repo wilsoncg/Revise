@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,40 @@ namespace ReviseApp
 {
     public class Revise2
     {
+        // million items, reasonable time, sorted ascending
+        public bool Exists(int[] ints, int k)
+        {
+            // 7ms
+            var s1 = Stopwatch.StartNew();
+            var linq = ints.Any(x => x == k);
+            s1.Stop();
+
+            // 2ms
+            var s2 = Stopwatch.StartNew();
+            var bs = ints.ToList().BinarySearch(k) >= 0;
+            s2.Stop();
+
+            Console.WriteLine($"Linq took {s1.ElapsedMilliseconds} ms");
+            Console.WriteLine($"BinarySearch took {s2.ElapsedMilliseconds} ms");
+            return bs;
+        }
+
+        // https://app.codility.com/programmers/lessons/2-arrays/cyclic_rotation/
+        public int[] CyclicRotation(int[] A, int K)
+        {
+            if (!A.Any())
+                return new int[] { };
+
+            var r = 
+                (K > A.Length) ? 
+                A.Length - (K % A.Length) : 
+                (A.Length - K);
+
+            var a = A.Skip(r);
+            var result = a.Concat(A.Take(r)).ToArray();
+            return result;
+        }
+
         // https://app.codility.com/programmers/lessons/3-time_complexity/frog_jmp/
         public double FrogJump(int x, int y, int d)
         {
@@ -94,6 +129,44 @@ namespace ReviseApp
         {
             Assert.AreEqual(1, new Revise2().MissingInteger(new[] { -5, -4, -3, -2, -1 }));
             Assert.AreEqual(1, new Revise2().MissingInteger(new[] { 0, 2, 3, 5, 6, 7 }));
+        }
+
+        [TestMethod]
+        public void CyclicRotationTest()
+        {
+            var input1 = new[] { 3, 8, 9, 7, 6 };
+            var input2 = new[] { 0, 0, 0 };
+            var input3 = new[] { 1, 2, 3, 4 };
+            var input4 = new[] { 1, 1, 2, 3, 5 };
+
+            var r = new Revise2();
+
+            CollectionAssert.AreEqual(new[] { 9, 7, 6, 3, 8}, r.CyclicRotation(input1, 3));
+            CollectionAssert.AreEqual(new[] { 0, 0, 0 }, r.CyclicRotation(input2, 1));
+            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4 }, r.CyclicRotation(input3, 4));
+            CollectionAssert.AreEqual(new[] { 4, 1, 2, 3 }, r.CyclicRotation(input3, 1));
+            CollectionAssert.AreEqual(new[] { 3, 4, 1, 2 }, r.CyclicRotation(input3, 2));
+            CollectionAssert.AreEqual(new[] { 2, 3, 4, 1 }, r.CyclicRotation(input3, 3));
+            CollectionAssert.AreEqual(new[] { 3, 5, 1, 1, 2 }, r.CyclicRotation(input4, 42));
+            CollectionAssert.AreEqual(new int[] { }, r.CyclicRotation(new int[] { }, 1));
+        }
+
+        IEnumerable<int> generate()
+        {
+            for (int i = 1; i < 1_000_000; i++)
+            {
+                yield return i;
+            }
+        }
+
+        [TestMethod]
+        public void ExistsTest()
+        {
+            var million = generate().ToArray();
+            var r = new Revise2();
+
+            Assert.IsTrue(r.Exists(million, 999_000));
+            Assert.IsFalse(r.Exists(million, 1_000_000));
         }
     }
 }
