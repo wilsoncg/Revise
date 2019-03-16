@@ -26,13 +26,13 @@ namespace ReviseApp
             return list.Aggregate(sum, (accumulator, x) => accumulator + x);
         }
 
-        public static IEnumerable<(int coin, int howMany)> MakeChange(int amount)
+        public static IEnumerable<(int coin, long howMany)> MakeChange(long amount)
         {
             var coins = new[] { 1, 2, 5, 10, 20, 50, 100 };
             var largestCoins = coins.OrderByDescending(x => x);
             var empty =
                 Enumerable
-                .Empty<(int coin, int howMany)>()
+                .Empty<(int coin, long howMany)>()
                 .ToList();
 
             var r =
@@ -73,10 +73,10 @@ namespace ReviseApp
 
     class Accum
     {
-        public List<(int coin, int howMany)> Change { get; set; }
-        public int Remaining { get; set; }
+        public List<(int coin, long howMany)> Change { get; set; }
+        public long Remaining { get; set; }
 
-        public Accum Add((int, int) c, int remaining)
+        public Accum Add((int, long) c, long remaining)
         {
             Change.Add(c);
             Remaining = remaining;

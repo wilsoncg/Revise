@@ -12,7 +12,8 @@ namespace ReviseApp
         {
             Output(Revise1.Fib().Take(10));
             Output(Library.fibs.Take(10));
-            Console.WriteLine("Make change for 213p = " + Output(Revise1.MakeChange(213)));
+            long s = 213;
+            Console.WriteLine("Make change for 213p = " + Output(Revise1.MakeChange(s)));
             Console.WriteLine(Revise1.TriangleArea(21, 32, 87));
 
             var revise2 = new Revise2();
@@ -31,7 +32,12 @@ namespace ReviseApp
             Console.WriteLine(string.Join(",", seq));
         }
 
-        static string Output(IEnumerable<(int, int)> seq)
+        static void Output(IEnumerable<long> seq)
+        {
+            Console.WriteLine(string.Join(",", seq));
+        }
+
+        static string Output(IEnumerable<(int, long)> seq)
         {
             var r =
                 seq.Aggregate(
