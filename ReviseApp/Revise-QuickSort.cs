@@ -9,35 +9,30 @@ namespace ReviseApp
 {
     public class Revise_QuickSort
     {
-        public IEnumerable<int> Sort(IEnumerable<int> input)
+        public IEnumerable<T> Sort<T>(IEnumerable<T> input) where T : IComparable<T>
         {
             // quicksort []     = []
-            // quicksort (x:xs) = quicksort ys ++ [x] ++ quicksort xs
+            // quicksort (x:xs) = quicksort ys ++ [x] ++ quicksort zs
             //          where
             //          ys = [a | a <- xs, a <= x]
             //          zs = [b | b <- xs, b > x]
 
             if (!input.Any())
-                return Enumerable.Empty<int>();
+                return Enumerable.Empty<T>();
 
             var x = input.Take(1).First();
             var xs = input.Skip(1);
 
-            var firstHalf = (xs.Count() / 2);
-            //var secondHalf = (xs.Count() - (xs.Count() / 2));
-            //var ys = xs.Take(firstHalf);
-            //var zs = xs.Skip(firstHalf);
-
-            var ys = Enumerable.Empty<int>();
-            if(xs.Any() && xs.First() <= x)
-                ys = ys.Concat(new[] { xs.First() });
-
-            var zs = Enumerable.Empty<int>();
-            if (xs.Any() && xs.First() > x)
-                zs = zs.Concat(new[] { xs.First() });
+            var ys = xs.Where(a => a.CompareTo(x) <= 0);
+            var zs = xs.Where(b => b.CompareTo(x) > 0);
             
-            return Sort(ys).Concat((new[] { x }).ToList()).Concat(Sort(zs));
+            return Sort(ys).Concat(new[] { x }).Concat(Sort(zs));
         }
+
+        //public static IEnumerable<int> operator +(IEnumerable<int> a, IEnumerable<int> b)
+        //{
+        //    return a.Concat(b);
+        //}
     }
 
     [TestClass]
