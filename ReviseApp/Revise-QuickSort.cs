@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Fsharp_ReviseApp;
+using Microsoft.FSharp.Collections;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,10 +41,19 @@ namespace ReviseApp
     public class Revise_QuickSortTests
     {
         [TestMethod]
-        public void Test()
+        public void Test_CSharp()
         {
             var input = new[] { 3, 6, 4, 1, 5, 2 };
             var sorted = new Revise_QuickSort().Sort(input).ToList();
+
+            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 5, 6 }, sorted);
+        }
+
+        [TestMethod]
+        public void Test_FSharp()
+        {
+            var input = new[] { 3, 6, 4, 1, 5, 2 };
+            var sorted = Library.qsort(ListModule.OfSeq(input)).ToList();
 
             CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 5, 6 }, sorted);
         }
