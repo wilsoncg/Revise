@@ -9,6 +9,18 @@ namespace ReviseApp
 {
     public class Revise5
     {
+        public int Cost(int[] A)
+        {
+            var seed = A.Take(2).Sum();
+            return 
+                A.Skip(2)
+                .Aggregate(
+                    seed, 
+                    (a, x) => 
+                        a + x + a, 
+                    a => a);
+        }
+
         public int WhenAllBulbsShine(int[] A)
         {
             return shining(A.Take(1), A.Skip(1), 1, 0);
@@ -92,6 +104,15 @@ namespace ReviseApp
             Assert.AreEqual(1, n4);
             Assert.AreEqual(2, n5);
             Assert.AreEqual(1, n6);
+        }
+
+        [TestMethod]
+        public void Cost()
+        {
+            var n1 = new Revise5().Cost(new[] { 100, 250, 1000 });
+            var n2 = new Revise5().Cost(new[] { 100, 250, 1000, 1000 });
+            Assert.AreEqual(1700, n1);
+            Assert.AreEqual(4400, n2);
         }
     }
 }
