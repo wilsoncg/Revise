@@ -9,6 +9,22 @@ namespace ReviseApp
 {
     public class Revise5
     {
+        public int WhenAllBulbsShine(int[] A)
+        {
+            return shining(A.Take(1), A.Skip(1), 1, 0);
+        }
+        
+        int shining(IEnumerable<int> slice, IEnumerable<int> rest, int moment, int total)
+        {
+            if (slice.All(x => x <= moment) && !rest.Any())
+                return total + 1;
+
+            if (slice.All(x => x <= moment))
+                return shining(slice.Concat(rest.Take(1)), rest.Skip(1), moment + 1, total + 1);
+
+            return shining(slice.Concat(rest.Take(1)), rest.Skip(1), moment + 1, total);
+        }
+
         public int NumSquareRoots(int A, int B)
         {
             if ((B - A) < 0)
@@ -58,6 +74,24 @@ namespace ReviseApp
             Assert.AreEqual(1, n5);
             Assert.AreEqual(0, invalid);
             Assert.IsTrue(big >= 3);
+        }
+
+        [TestMethod]
+        public void WhenAllBulbsOn()
+        {
+            var n1 = new Revise5().WhenAllBulbsShine(new[] { 2, 1, 3, 5, 4 });
+            var n2 = new Revise5().WhenAllBulbsShine(new[] { 2, 3, 4, 1, 5 });
+            var n3 = new Revise5().WhenAllBulbsShine(new[] { 1, 3, 4, 2, 5 });
+            var n4 = new Revise5().WhenAllBulbsShine(new[] { 2, 1 });
+            var n5 = new Revise5().WhenAllBulbsShine(new[] { 1, 2 });
+            var n6 = new Revise5().WhenAllBulbsShine(new[] { 1 });
+
+            Assert.AreEqual(3, n1);
+            Assert.AreEqual(2, n2);
+            Assert.AreEqual(3, n3);
+            Assert.AreEqual(1, n4);
+            Assert.AreEqual(2, n5);
+            Assert.AreEqual(1, n6);
         }
     }
 }
