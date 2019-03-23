@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// https://weblogs.asp.net/dixin/category-theory-via-c-sharp-23-knowing-the-cost
+
 namespace System.Collections.Generic
 {
     public static class Ext
