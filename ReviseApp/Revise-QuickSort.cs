@@ -7,6 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+namespace System.Collections.Generic
+{
+    public static class Ext
+    {
+        public static IEnumerable<T> QuickSort<T>(this IEnumerable<T> values)
+                where T : IComparable
+        {
+            if (!values.Any())
+                yield break;
+
+            var x = values.First();
+            var xs = values.Skip(1);
+
+            foreach (var l in xs.Where(i => i.CompareTo(x) < 0).QuickSort())
+                yield return l;
+
+            yield return x;
+
+            foreach (var r in xs.Where(i => i.CompareTo(x) >= 0).QuickSort())
+                yield return r;
+        }
+    }
+}
+
 namespace ReviseApp
 {
     public class Revise_QuickSort
@@ -20,42 +44,59 @@ namespace ReviseApp
             //          zs = [b | b <- xs, b > x]
 
             if (!input.Any())
-                return Enumerable.Empty<T>();
+                return input;
 
-            var x = input.Take(1).First();
+            var x = input.First();
             var xs = input.Skip(1);
 
             var ys = xs.Where(a => a.CompareTo(x) <= 0);
             var zs = xs.Where(b => b.CompareTo(x) > 0);
             
             return Sort(ys).Concat(new[] { x }).Concat(Sort(zs));
-        }
-
-        //public static IEnumerable<int> operator +(IEnumerable<int> a, IEnumerable<int> b)
-        //{
-        //    return a.Concat(b);
-        //}
+        }       
     }
 
     [TestClass]
     public class Revise_QuickSortTests
     {
         [TestMethod]
-        public void Test_CSharp()
+        public void Test_CSharp_Sort()
         {
-            var input = new[] { 3, 6, 4, 1, 5, 2 };
-            var sorted = new Revise_QuickSort().Sort(input).ToList();
+            var input = Utility.Generate(10_000).ToArray();
+            var sorted = new Revise_QuickSort().Sort(input).ToArray();
 
-            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 5, 6 }, sorted);
+            CollectionAssert.AreEqual(input.OrderBy(x => x).ToArray(), sorted);
+        }
+
+        [TestMethod]
+        public void Test_CSharp_Sort_WithYield()
+        {
+            var input = Utility.Generate(10_000).ToArray();
+            var sorted = input.QuickSort().ToArray();
+
+            CollectionAssert.AreEqual(input.OrderBy(x => x).ToArray(), sorted);
         }
 
         [TestMethod]
         public void Test_FSharp()
         {
             var input = new[] { 3, 6, 4, 1, 5, 2 };
-            var sorted = Library.qsort(ListModule.OfSeq(input)).ToList();
+            var input2 = Utility.Generate(10_0000).ToArray();
+            var sorted = Library.qsort(ListModule.OfSeq(input)).ToArray();
+            var sorted2 = Library.qsort(ListModule.OfSeq(input2)).ToArray();
 
-            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 5, 6 }, sorted);
+            CollectionAssert.AreEqual(input.OrderBy(x => x).ToArray(), sorted);
+            var frameworkSort = input2.OrderBy(x => x).ToArray();
+            CollectionAssert.AreEqual(frameworkSort, sorted2);
+        }
+
+        [TestMethod]
+        public void Test_FrameworkSort()
+        {
+            // no assertion, just using VS Test runner to see timing
+            var input = Utility.Generate(10_0000).ToArray();
+
+            Assert.IsTrue(input.OrderBy(x => x).ToArray().Any());
         }
     }
 }

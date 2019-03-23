@@ -6,7 +6,10 @@ module Library =
   (0, 1) |> 
   Seq.unfold(fun (first, second) -> Some(first, (second, first + second)))
 
- let rec qsort (input) =
+ let rec qsort input = seq {
     match input with
-    | [] -> []
-    | x::xs -> List.partition(fun f -> f <= x) xs |> fun (ys,zs) -> qsort(ys) @ x :: qsort(zs)
+    | [] -> yield! Seq.empty
+    | x::xs -> 
+        let smaller, larger = List.partition ((>=) x) xs
+        yield! qsort smaller; yield x; yield! qsort larger
+}

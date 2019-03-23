@@ -149,20 +149,12 @@ namespace ReviseApp
             CollectionAssert.AreEqual(new[] { 2, 3, 4, 1 }, r.CyclicRotation(input3, 3));
             CollectionAssert.AreEqual(new[] { 3, 5, 1, 1, 2 }, r.CyclicRotation(input4, 42));
             CollectionAssert.AreEqual(new int[] { }, r.CyclicRotation(new int[] { }, 1));
-        }
-
-        IEnumerable<int> generate()
-        {
-            for (int i = 1; i < 1_000_000; i++)
-            {
-                yield return i;
-            }
-        }
+        }        
 
         [TestMethod]
         public void ExistsTest()
         {
-            var million = generate().ToArray();
+            var million = Enumerable.Range(0, 1_000_000).ToArray();
             var r = new Revise2();
 
             Assert.IsTrue(r.Exists(million, 999_000));
