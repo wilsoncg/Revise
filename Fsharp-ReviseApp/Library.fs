@@ -13,3 +13,13 @@ module Library =
         let smaller, larger = List.partition ((>=) x) xs
         yield! qsort smaller; yield x; yield! qsort larger
 }
+
+type FizzBuzzGenerator() =
+    member __.Apply (list:seq<int>) =
+     let test n =
+        match (n%3, n%5) with
+        | 0,0 -> "FizzBuzz"
+        | 0,_ -> "Fizz"
+        | _,0 -> "Buzz"
+        | _,_ -> string n
+     list |> Seq.map test
