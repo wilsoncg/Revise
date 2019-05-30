@@ -10,3 +10,5 @@ module Library =
     match input with
     | [] -> []
     | x::xs -> List.partition(fun f -> f <= x) xs |> fun (ys,zs) -> qsort(ys) @ x :: qsort(zs)
+
+type IGetListLength = abstract member Invoke<'a> : 'a List -> int

@@ -55,6 +55,7 @@
     <Compile Include="Revise3.cs" />
     <Compile Include="Revise4.cs" />
     <Compile Include="Revise5.cs" />
+    <Compile Include="Revise6.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
