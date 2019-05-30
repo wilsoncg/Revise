@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2050
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReviseApp", "ReviseApp.csproj", "{AF87312F-D8A2-4F68-BAF1-4F457295EF7B}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fsharp-ReviseApp", "..\Fsharp-ReviseApp\Fsharp-ReviseApp.fsproj", "{8EB7907C-91DA-4EF4-A97C-C06E0011D900}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EEBD78F6-C835-4F93-901C-E9810EE772BF}"
+	ProjectSection(SolutionItems) = preProject
+		..\Revise-sql.sql = ..\Revise-sql.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
