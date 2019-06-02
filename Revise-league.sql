@@ -7,12 +7,13 @@ USE [master];
 GO
 
 IF EXISTS (SELECT * FROM sys.databases WHERE name = 'FootbalLeague')
+begin
 	ALTER DATABASE FootbalLeague
 	SET SINGLE_USER WITH
 	ROLLBACK AFTER 5 --this will give your current connections 5 seconds to complete
 
-	DROP DATABASE FootbalLeague;
-GO
+	DROP DATABASE FootbalLeague
+end
 
 -- Create the FootbalLeague database.
 CREATE DATABASE FootbalLeague;

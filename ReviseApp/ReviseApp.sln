@@ -13,7 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityValidationTests", "..\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EEBD78F6-C835-4F93-901C-E9810EE772BF}"
 	ProjectSection(SolutionItems) = preProject
-		..\Revise-sql.sql = ..\Revise-sql.sql
+		..\Revise-league-results.sql = ..\Revise-league-results.sql
+		..\Revise-league.sql = ..\Revise-league.sql
 	EndProjectSection
 EndProject
 Global
