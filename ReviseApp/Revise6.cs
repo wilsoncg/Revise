@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Fsharp_ReviseApp;
 
 namespace ReviseApp
 {
@@ -44,7 +45,7 @@ namespace ReviseApp
     }
 
     [TestClass]
-    public class Revise6Tests
+    public class BattleshipsTests
     {
         [TestMethod]
         public void Test()
@@ -54,10 +55,10 @@ namespace ReviseApp
             var s3 = "2A 2B";
             var s4 = "1A 2A";
 
-            Assert.AreEqual("1A 1B 2A 2B", new Revise6().ToFullShip(s1, 2));
-            Assert.AreEqual("1A 1B", new Revise6().ToFullShip(s2, 2));
-            Assert.AreEqual("2A 2B", new Revise6().ToFullShip(s3, 2));
-            Assert.AreEqual("1A 2A", new Revise6().ToFullShip(s4, 2));
+            Assert.AreEqual("1A 1B 2A 2B", Battleships.ToFullShip(s1, 2));
+            Assert.AreEqual("1A 1B", Battleships.ToFullShip(s2, 2));
+            Assert.AreEqual("2A 2B", Battleships.ToFullShip(s3, 2));
+            Assert.AreEqual("1A 2A", Battleships.ToFullShip(s4, 2));
         }
     }
 }
