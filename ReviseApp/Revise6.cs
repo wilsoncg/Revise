@@ -52,7 +52,7 @@ namespace ReviseApp
         {
             var s1 = "1A 2B";
 
-            Assert.AreEqual("1A 1B 2A 2B", Battleships.ToFullShip(s1, 2));
+            Assert.AreEqual("1A 1B 2A 2B", Battleships.ToFullShip(s1));
         }
 
         [TestMethod]
@@ -62,9 +62,9 @@ namespace ReviseApp
             var s3 = "2A 2B";
             var s4 = "1A 2A";
 
-            Assert.AreEqual("1A 1B", Battleships.ToFullShip(s2, 2));
-            Assert.AreEqual("2A 2B", Battleships.ToFullShip(s3, 2));
-            Assert.AreEqual("1A 2A", Battleships.ToFullShip(s4, 2));
+            Assert.AreEqual("1A 1B", Battleships.ToFullShip(s2));
+            Assert.AreEqual("2A 2B", Battleships.ToFullShip(s3));
+            Assert.AreEqual("1A 2A", Battleships.ToFullShip(s4));
         }
 
         [TestMethod]
@@ -74,9 +74,9 @@ namespace ReviseApp
             var s3 = "2A 2C";
             var s4 = "1A 3A";
 
-            Assert.AreEqual("1A 1B 1C", Battleships.ToFullShip(s2, 2));
-            Assert.AreEqual("2A 2B 2C", Battleships.ToFullShip(s3, 2));
-            Assert.AreEqual("1A 2A 3A", Battleships.ToFullShip(s4, 2));
+            Assert.AreEqual("1A 1B 1C", Battleships.ToFullShip(s2));
+            Assert.AreEqual("2A 2B 2C", Battleships.ToFullShip(s3));
+            Assert.AreEqual("1A 2A 3A", Battleships.ToFullShip(s4));
         }
 
         [TestMethod]
@@ -84,7 +84,18 @@ namespace ReviseApp
         {
             var s1 = "1A 3C";
 
-            Assert.AreEqual("1A 1B 1C 2A 2B 2C 3A 3B 3C", Battleships.ToFullShip(s1, 9));
+            Assert.AreEqual("1A 1B 1C 2A 2B 2C 3A 3B 3C", 
+                Battleships.ToFullShip(s1));
+        }
+
+        [TestMethod]
+        public void TwoShips()
+        {
+            var s = "1A 1B,2D 4D";
+            var ships = Battleships.SplitShips(s).ToList();
+
+            CollectionAssert.Contains(ships, "1A 1B");
+            CollectionAssert.Contains(ships, "2D 3D 4D");
         }
     }
 }
