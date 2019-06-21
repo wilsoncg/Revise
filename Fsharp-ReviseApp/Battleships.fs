@@ -21,17 +21,6 @@ module Battleships =
     let x1 = s.Chars 3
     let y1 = s.Chars 4
 
-    let isRow = (x0 = x1) || (y0 = y1)
-    if (isRow) 
-    then 
-        List.allPairs [x0..x1] [y0..y1] 
-        |> Seq.map (fun (x,y) -> sprintf "%O%O" x y)
-        |> String.concat " "
-        //|> print
-    else
-        let row1 = rowToInt x0
-        let row2 = rowToInt x1
-        let r = 
-         [x0; y0; ' '; x0; y1; ' '; x1; y0; ' '; x1; y1]
-         |> print
-        r
+    List.allPairs [x0..x1] [y0..y1] 
+    |> Seq.map (fun (x,y) -> sprintf "%O%O" x y)
+    |> String.concat " "
