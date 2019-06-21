@@ -48,17 +48,43 @@ namespace ReviseApp
     public class BattleshipsTests
     {
         [TestMethod]
-        public void Test()
+        public void TwoByTwoSquareShipTest()
         {
             var s1 = "1A 2B";
+
+            Assert.AreEqual("1A 1B 2A 2B", Battleships.ToFullShip(s1, 2));
+        }
+
+        [TestMethod]
+        public void ColumnTest()
+        {
             var s2 = "1A 1B";
             var s3 = "2A 2B";
             var s4 = "1A 2A";
 
-            Assert.AreEqual("1A 1B 2A 2B", Battleships.ToFullShip(s1, 2));
             Assert.AreEqual("1A 1B", Battleships.ToFullShip(s2, 2));
             Assert.AreEqual("2A 2B", Battleships.ToFullShip(s3, 2));
             Assert.AreEqual("1A 2A", Battleships.ToFullShip(s4, 2));
+        }
+
+        [TestMethod]
+        public void ThreeSquareColumnTest()
+        {
+            var s2 = "1A 1C";
+            var s3 = "2A 2C";
+            var s4 = "1A 3A";
+
+            Assert.AreEqual("1A 1B 1C", Battleships.ToFullShip(s2, 2));
+            Assert.AreEqual("2A 2B 2C", Battleships.ToFullShip(s3, 2));
+            Assert.AreEqual("1A 2A 3A", Battleships.ToFullShip(s4, 2));
+        }
+
+        [TestMethod]
+        public void ThreeByThreeSquareShipTest()
+        {
+            var s1 = "1A 3C";
+
+            Assert.AreEqual("1A 1B 1C 2A 2B 2C 3A 3B 3C", Battleships.ToFullShip(s1, 9));
         }
     }
 }
