@@ -13,6 +13,11 @@ module Battleships =
     sequence 
     |> Seq.map (fun c -> c.ToString()) 
     |> String.concat ""
+ let private registerHits (ship:string) (hits:string) =
+    hits.Split(' ') 
+    |> Seq.fold (fun (state:string) hit -> state.Replace(hit, "")) ship
+    |> (fun f -> f.TrimStart(' ').TrimEnd(' '))
+    
 
 // 1A 2B -> 1A 1B 2A 2B
  let ToFullShip (s:string) = 
@@ -27,3 +32,8 @@ module Battleships =
  
  let SplitShips (s:string) =
     s.Split(',') |> Seq.map ToFullShip
+ 
+ let Evaluate (s:string) (t:string) =
+    s 
+    |> SplitShips 
+    |> Seq.map (fun s -> registerHits s t)

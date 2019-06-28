@@ -10,6 +10,14 @@ namespace ReviseApp
 {
     public class Revise6
     {
+        public void Accum()
+        {
+            var seed = "abc";
+            new[] {"a", "b"}
+            .Aggregate(seed, (accum, s) => {
+                return accum.Replace(s, ""); });
+        }
+
         int RowToInt(char c)
         {
             return int.Parse(c.ToString());
@@ -96,6 +104,17 @@ namespace ReviseApp
 
             CollectionAssert.Contains(ships, "1A 1B");
             CollectionAssert.Contains(ships, "2D 3D 4D");
+        }
+
+        [TestMethod]
+        public void Test()
+        {
+            var s = "1A 1B,2D 4D";
+            var t = "1A";
+            var result = Battleships.Evaluate(s, t).ToList();
+
+            CollectionAssert.Contains(result, "1B");
+            CollectionAssert.Contains(result, "2D 3D 4D");
         }
     }
 }
