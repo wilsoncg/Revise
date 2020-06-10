@@ -46,14 +46,12 @@ namespace ReviseApp
             var isColumn = (y0 == y1);
             var isSingleSquare = (x0 == x1 && y0 == y1);
             if (isRow || isSingleSquare)
-            {
                 return s;
-            }
+
             if (isColumn)
             {
-                var c = x1 - x0;
-                var rows = Enumerable.Range(x0, c + 1);
-                var columns = new[] { s[1].ToString() };
+                var rows = Enumerable.Range(x0, (x1 - x0) + 1);
+                var columns = new[] { y0.ToString() };
                 var r = rows.SelectMany(row => columns, (row, column) => row + column);
                 return String.Join(" ", r);
             }
@@ -61,19 +59,19 @@ namespace ReviseApp
             return $"{x0}{y0} {x0}{y1} {x0 + 1}{y0} {x0 + 1}{y1}";
         }
 
-        public (int,int) Play(string shipCoords, string hitList)
+        public (int sunk, int hitNotSunk) Play(string shipCoords, string hitList)
         {
             var counts = 
                 shipCoords
                 .Split(',')
                 .Select(x => ToFullShip(x).HitsOrSunk(hitList));
-            return counts.Aggregate((x, y) => { return (x.Item1 + y.Item1, x.Item2 + y.Item2); });
+            return counts.Aggregate((x, y) => { return (x.sunk + y.sunk, x.hitNotSunk + y.hitNotSunk); });
         }
     }
 
     public static class ShipExt
     {
-        public static (int, int) HitsOrSunk(this string ship, string hitList)
+        public static (int sunk, int hitNotSunk) HitsOrSunk(this string ship, string hitList)
         {
             var fullShip = ship.Split(' ');
             var hitCount = Hits(ship, hitList);
