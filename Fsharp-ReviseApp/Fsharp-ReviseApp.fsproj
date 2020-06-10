@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Library.fs" />
+    <Compile Include="Battleships.fs" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

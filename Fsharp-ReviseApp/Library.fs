@@ -4,7 +4,9 @@ module Library =
 
  let fibs = 
   (0, 1) |> 
-  Seq.unfold(fun (first, second) -> Some(first, (second, first + second)))
+  Seq.unfold(
+    fun (first, second) -> 
+        Some(first, (second, first + second)))
 
  let rec qsort input = seq {
     match input with
@@ -17,7 +19,9 @@ module Library =
  let rec qsortList (input) =
     match input with
     | [] -> []
-    | x::xs -> List.partition(fun f -> f <= x) xs |> fun (ys,zs) -> qsortList(ys) @ x :: qsortList(zs)
+    | x::xs -> 
+        List.partition(fun f -> f <= x) 
+         xs |> fun (ys,zs) -> qsortList(ys) @ x :: qsortList(zs)
 
 type FizzBuzzGenerator() =
     member __.Apply (list:seq<int>) =
