@@ -124,12 +124,6 @@ namespace ReviseApp
             return radiansToDegrees(radians);
         }
 
-        class ConcavityAccum
-        {
-            public List<int> NotInConvexHull { get; set; }
-            public Point2D Point { get; set; }
-        }
-
         public Point2D[] ToPoints(IEnumerable<(int x, int y)> points)
         {
             return 
