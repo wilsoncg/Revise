@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 
 namespace ReviseApp
 {
-    public class Revise3
+    // https://app.codility.com/programmers/lessons/99-future_training/polygon_concavity_index/
+    // codility is c# 7 (mono)
+    public class Codility99_PolygonConcavityIndex
     {
-        private IList<int> hull(Point2D[] A)
+        IList<int> hull(Point2D[] A)
         {
             var s = toPointWithIndex(A).Take(3).ToList();
             var notInConvexHull = new List<int>();
@@ -16,7 +17,7 @@ namespace ReviseApp
             for (int i = 3; i < A.Count(); i++)
             {
                 while (
-                    s.Count() > 0 &&
+                    s.Count() > 1 &&
                     AngleBetween3Points(
                         s[s.Count() - 2].Point,
                         s[s.Count() - 1].Point,
@@ -53,56 +54,21 @@ namespace ReviseApp
                     return s + 1;
                 });
             return list;
-        }
-
-        // https://app.codility.com/programmers/lessons/99-future_training/polygon_concavity_index/
-        public int PolygonConcavitiyIndex(Point2D[] A)
-        {
-            if (A.Count() < 4)
-                return -1;
-
-            var notInHull = hull(A);
-            if (!notInHull.Any())
-                return -1;
-
-            return notInHull.First();
-        }
-
-        public double LeftOnOrRight(int x1, int y1, int x2, int y2, int x3, int y3)
-        {
-            return LeftOnOrRight(
-                new Point2D { x = x1, y = y1 },
-                new Point2D { x = x2, y = y2 },
-                new Point2D { x = x3, y = y3 });
-        }
-
-        public double LeftOnOrRight(Point2D p0, Point2D p1, Point2D p2)
-        {
-            return 
-                ((p1.x - p0.x) * (p2.y - p0.y)) - 
-                ((p2.x - p0.x) * (p1.y - p0.y));
-        }
-
-        public double AngleBetween2Vectors(
-            int x1, int y1,
-            int x2, int y2)
-        {
-            return Angle(new Vector2(x1, y1), new Vector2(x2, y2));
-        }
+        }               
 
         public double AngleBetween3Points(
             Point2D a, Point2D b, Point2D c)
         {
             var r = AngleBetween3Points(a.x, a.y, b.x, b.y, c.x, c.y);
-            Console.WriteLine($"Angle is {r} for {a.x},{a.y} {b.x},{b.y} {c.x},{c.y}");
+            //Console.WriteLine($"Angle is {r} for {a.x},{a.y} {b.x},{b.y} {c.x},{c.y}");
             return r;
         }
 
         public double AngleBetween3Points(
             int x1, int y1, int x2, int y2, int x3, int y3)
         {
-            Vector2 v1 = new Vector2(x2 - x1, y2 - y1);
-            Vector2 v2 = new Vector2(x3 - x2, y3 - y2);
+            var v1 = new Vector() { X = x2 - x1, Y = y2 - y1 };
+            var v2 = new Vector() { X = x3 - x2, Y = y3 - y2 };
             return Math.Abs(Angle(v1, v2));
         }
 
@@ -112,8 +78,8 @@ namespace ReviseApp
         }
 
         double Angle(
-            Vector2 v1, 
-            Vector2 v2)
+            Vector v1, 
+            Vector v2)
         {
             var radians = Math.Atan2(v2.Y, v2.X) - Math.Atan2(v1.Y, v1.X);
             if (radians == 0)
@@ -128,24 +94,60 @@ namespace ReviseApp
         {
             return 
                 points
-                .Select(p => new Point2D { x = p.x, y = p.y })
+                .Select(p => new Point2D(p.x, p.y))
                 .ToArray();
+        }
+
+        public class Vector { public int X; public int Y; }
+        public class Point2D {
+            public int x; public int y;
+            public Point2D(int x, int y) { this.x = x; this.y = y; } 
+        }
+        public class PointWithIndex { public Point2D Point; public int index; }
+
+        public int PolygonConcavitiyIndex(Point2D[] A)
+        {
+            if (A.Count() < 4)
+                return -1;
+
+            var notInHull = hull(A);
+            if (!notInHull.Any())
+                return -1;
+
+            return notInHull.First();
         }
     }
 
-    public class Point2D { public int x; public int y; }
-    public class PointWithIndex { public Point2D Point; public int index; }
+    public class Util
+    {
+        public double LeftOnOrRight((int x,int y) p0, (int x, int y) p1, (int x, int y) p2)
+        {
+            return
+                ((p1.x - p0.x) * (p2.y - p0.y)) -
+                ((p2.x - p0.x) * (p1.y - p0.y));
+        }
+
+        public double LeftOnOrRight(int x1, int y1, int x2, int y2, int x3, int y3)
+        {
+            return LeftOnOrRight(
+                (x1, y1),
+                (x2, y2),
+                (x3, y3));
+        }
+    }
 
     [TestClass]
-    public class Revise3Tests
+    public class Codility99_PolygonConcavityIndexTests
     {
+        private Codility99_PolygonConcavityIndex pci = new Codility99_PolygonConcavityIndex();
+        private Util u = new Util(); 
+
         [TestMethod]
         public void IsConvexReturnsMinus1()
         {
             var input = new[] { (-1, 3), (1, 2), (3, 1), (0, -1), (-2, 1) };
 
-            var r3 = new Revise3();
-            var result = r3.PolygonConcavitiyIndex(r3.ToPoints(input));
+            var result = pci.PolygonConcavitiyIndex(pci.ToPoints(input));
 
             Assert.AreEqual(-1, result);
         }
@@ -155,8 +157,7 @@ namespace ReviseApp
         {
             var input = new[] { (-1, 3), (1, 2), (1, 1), (3, 1), (0, -1), (-2, 1), (-1, 2) };
 
-            var r3 = new Revise3();
-            var result = r3.PolygonConcavitiyIndex(r3.ToPoints(input));
+            var result = pci.PolygonConcavitiyIndex(pci.ToPoints(input));
 
             Assert.IsTrue(result == 2 | result == 6);
         }
@@ -166,8 +167,7 @@ namespace ReviseApp
         {
             var input = new[] { (-1, 3), (1, 2), (3, 1), (0, -1), (-2, 1), (-1, 2) };
 
-            var r3 = new Revise3();
-            var result = r3.PolygonConcavitiyIndex(r3.ToPoints(input));
+            var result = pci.PolygonConcavitiyIndex(pci.ToPoints(input));
 
             Assert.AreEqual(5, result);
         }
@@ -177,7 +177,7 @@ namespace ReviseApp
         {
             var input = new[] { (1, 3), (3, 3), (3, 1), (1, 1) };
 
-            var r3 = new Revise3();
+            var r3 = pci;
             var result = r3.PolygonConcavitiyIndex(r3.ToPoints(input));
 
             Assert.AreEqual(-1, result);
@@ -186,57 +186,114 @@ namespace ReviseApp
         [TestMethod]
         public void CollinearTest()
         {
-            var r1 = new Revise3().LeftOnOrRight(-1, 3, 1, 2, 3, 1);
+            var r1 = u.LeftOnOrRight(-1, 3, 1, 2, 3, 1);
             Assert.AreEqual(0, r1);
         }
 
         [TestMethod]
         public void TurnLeft()
         {
-            var r2 = new Revise3().LeftOnOrRight(1, 2, 1, 1, 3, 1);
+            var r2 = u.LeftOnOrRight(1, 2, 1, 1, 3, 1);
             Assert.IsTrue(r2 > 0, $"was {r2}");
         }
 
         [TestMethod]
         public void TurnRight()
         {
-            var r1 = new Revise3().LeftOnOrRight(1, 2, 3, 1, 0, -1);
+            var r1 = u.LeftOnOrRight(1, 2, 3, 1, 0, -1);
             Assert.IsTrue(r1 < 0, $"was {r1}");
         }
 
         [TestMethod]
         public void TurnRightAlso()
         {
-            var r1 = new Revise3().LeftOnOrRight(3, 1, 0, -1, -2, 1);
+            var r1 = u.LeftOnOrRight(3, 1, 0, -1, -2, 1);
             Assert.IsTrue(r1 < 0, $"was {r1}");
         }
 
         [TestMethod]
         public void AngleCollinearTest()
         {
-            var r1 = new Revise3().AngleBetween3Points(-1, 3, 1, 2, 3, 1);
+            var r1 = pci.AngleBetween3Points(-1, 3, 1, 2, 3, 1);
             Assert.AreEqual(180, r1);
         }
 
         [TestMethod]
         public void Angle90()
         {
-            var r2 = new Revise3().AngleBetween3Points(1, 2, 1, 1, 3, 1);
+            var r2 = pci.AngleBetween3Points(1, 2, 1, 1, 3, 1);
             Assert.IsTrue(r2 == 90, $"was {r2}");
         }
 
         [TestMethod]
         public void AngleGreaterThan90()
         {
-            var r1 = new Revise3().AngleBetween3Points(1, 2, 3, 1, 0, -1);
+            var r1 = pci.AngleBetween3Points(1, 2, 3, 1, 0, -1);
             Assert.IsTrue(r1 > 90, $"was {r1}");
         }
 
         [TestMethod]
         public void AnotherAngleGreaterThan90()
         {
-            var r1 = new Revise3().AngleBetween3Points(3, 1, 0, -1, -2, 1);
+            var r1 = pci.AngleBetween3Points(3, 1, 0, -1, -2, 1);
             Assert.IsTrue(r1 > 90, $"was {r1}");
         }
+
+        // Boomerang
+        [TestMethod]
+        public void CheckBoomerang()
+        {
+            var boomerang = new[] { 
+                (-1, 6), 
+                (1, 7), 
+                (3, 6), 
+                (2, 4),
+                (1, 2),
+                (0, 0),
+                (0, 2),
+                (1, 3),
+                (2, 5),
+                (1, 6),
+                (-1, 6)
+            };
+
+            var r1 = pci.PolygonConcavitiyIndex(pci.ToPoints(boomerang));
+            Assert.AreEqual(7, r1);
+        }
+
+        [TestMethod]
+        public void CheckManyCollinear()
+        {
+            var collinear = new[] {
+                (-1, 6),
+                (1, 7),
+                (3, 6),
+                (2, 4),
+                (1, 2),
+                (0, 0),
+                (-1, -1),
+                (-2, -2),
+                (-1, 6)
+            };
+
+            var r1 = pci.PolygonConcavitiyIndex(pci.ToPoints(collinear));
+            Assert.AreEqual(-1, r1);
+        }
+
+        // Star
+        // Polygon has exactly one angle equals to (90 + epislon) degrees
+        // collinear vertices
+
+        /* 
+        Unhandled Exception:
+        System.ArgumentOutOfRangeException: Index was out of range.Must be non-negative and less than the size of the collection.
+        Parameter name: index
+          at System.ThrowHelper.ThrowArgumentOutOfRangeException ()[0x00000] in <filename unknown>:0 
+          at System.Collections.Generic.List`1[Solution+PointWithIndex].get_Item (Int32 index)[0x00000] in <filename unknown>:0 
+          at Solution.hull (Point2D[] A)[0x00000] in <filename unknown>:0 
+          at Solution.solution (Point2D[] A)[0x00000] in <filename unknown>:0 
+          at SolutionWrapper.run (System.String input, System.String output)[0x00000] in <filename unknown>:0 
+          at SolutionWrapper.Main (System.String[] args)[0x00000] in <filename unknown>:0 
+        */
     }
 }
