@@ -102,3 +102,13 @@ Write an efficient algorithm for the following assumptions:
 * the coordinates of each point in array A are integers within the range [−1,000,000,000..1,000,000,000];
 * no two edges of the polygon A intersect, other than meeting at their endpoints;
 * array A does not contain duplicate points.
+
+### Useful links
+
+- **FScheck**
+  - [FScheck docs](https://fscheck.github.io/FsCheck/index.html)
+  - [Stackoverflow [F#] [FScheck] tuple search](https://stackoverflow.com/search?q=%5Bf%23%5D+%5Bfscheck%5D+tuple)
+  - [Ad hoc, in-line Arbitraries - blog.ploeh.dk](https://blog.ploeh.dk/2015/09/08/ad-hoc-arbitraries-with-fscheckxunit/)
+  - [Arbitrary Version instances - blog.ploeh.dk](https://blog.ploeh.dk/2014/03/11/arbitrary-version-instances-with-fscheck/)
+  - [Roman numerals via property based tdd - blog.ploeh.dk](https://blog.ploeh.dk/2016/06/28/roman-numerals-via-property-based-tdd/)
+  - [Property based testing talk code samples - Scott Wlaschin](https://github.com/swlaschin/PropBasedTestingTalk)
