@@ -1,4 +1,4 @@
-module Tests
+module Codility99_PolygonConcavityIndexTests
 
 open System
 open Xunit
