@@ -22,8 +22,7 @@ namespace ReviseApp
         static int aggregateExample()
         {
             var list = new int[] { 2, 4, 8, 16, 32 };
-            var sum = 0;
-            return list.Aggregate(sum, (accumulator, x) => accumulator + x);
+            return list.Aggregate(0, (accumulator, x) => accumulator + x);
         }
 
         public static IEnumerable<(int coin, long howMany)> MakeChange(long amount)

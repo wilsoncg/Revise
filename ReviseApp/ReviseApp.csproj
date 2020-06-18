@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Battleships.cs" />
+    <Compile Include="Codility01-BinaryGap.cs" />
     <Compile Include="Codility99-PolygonConcavityIndex.cs" />
     <Compile Include="FizzBuzzTests.cs" />
     <Compile Include="Program.cs" />
