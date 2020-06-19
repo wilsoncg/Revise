@@ -50,6 +50,7 @@
     <Compile Include="Battleships.cs" />
     <Compile Include="Codility01-BinaryGap.cs" />
     <Compile Include="Codility02-OddOccurences.cs" />
+    <Compile Include="Codility03-TimeComplexity.cs" />
     <Compile Include="Codility99-PolygonConcavityIndex.cs" />
     <Compile Include="FizzBuzzTests.cs" />
     <Compile Include="Program.cs" />
