@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ReviseApp
 {
-    class Codility02_OddOccurences
+    public class Codility02_OddOccurences
     {
         public int Occurences(int[] A)
         {
@@ -44,6 +44,14 @@ namespace ReviseApp
             var input = new[] { 9, 3, 9, 3, 9, 7, 9 };
             var r = new Codility02_OddOccurences().Occurences(input);
             Assert.AreEqual(7, r);
+        }
+
+        [TestMethod]
+        public void EmptyTest()
+        {
+            var input = new int[] { };
+            var r = new Codility02_OddOccurences().Occurences(input);
+            Assert.AreEqual(0, r);
         }
     }
 }
