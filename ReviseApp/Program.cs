@@ -102,9 +102,9 @@ namespace ReviseApp
             Console.WriteLine("Make change for 213p = " + Output(Revise1.MakeChange(s)));
             Console.WriteLine(Revise1.TriangleArea(21, 32, 87));
 
-            var revise2 = new Revise2();
-            Console.WriteLine("MissingInt " + revise2.MissingInteger(new[] { 2 }));
-            Console.WriteLine("MissingInt " + revise2.MissingInteger(new[] { -1, -3 }));
+            var counting = new Codility04_CountingElements();
+            Console.WriteLine("MissingInt " + counting.MissingInteger(new[] { 2 }));
+            Console.WriteLine("MissingInt " + counting.MissingInteger(new[] { -1, -3 }));
         }
 
         static void Output(IEnumerable<int> seq)

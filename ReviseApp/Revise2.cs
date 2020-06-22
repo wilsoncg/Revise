@@ -42,44 +42,12 @@ namespace ReviseApp
             var a = A.Skip(r);
             var result = a.Concat(A.Take(r)).ToArray();
             return result;
-        }        
-
-        // https://app.codility.com/programmers/lessons/4-counting_elements/missing_integer/
-        public int MissingInteger(int[] A)
-        {
-            if (!A.Any())
-                return 1;
-            var a = A.OrderBy(x => x);
-
-            var r = Enumerable.Range(1, A.Length + 1).Except(a).First();
-            return r;
-        }        
+        }
     }
 
     [TestClass]
     public class Revise2Tests
     {
-        [TestMethod]
-        public void MissingInteger_basic()
-        {
-            Assert.AreEqual(4, new Revise2().MissingInteger(new[] { 1, 2, 3 }));
-            Assert.AreEqual(1, new Revise2().MissingInteger(new[] { -1, -3 }));
-            Assert.AreEqual(5, new Revise2().MissingInteger(new[] { 1, 3, 6, 4, 1, 2 }));
-        }
-
-        [TestMethod]
-        public void MissingInteger_extreme_single()
-        {
-            Assert.AreEqual(1, new Revise2().MissingInteger(new[] { 2 }));
-        }
-
-        [TestMethod]
-        public void MissingInteger_failed()
-        {
-            Assert.AreEqual(1, new Revise2().MissingInteger(new[] { -5, -4, -3, -2, -1 }));
-            Assert.AreEqual(1, new Revise2().MissingInteger(new[] { 0, 2, 3, 5, 6, 7 }));
-        }
-
         [TestMethod]
         public void CyclicRotationTest()
         {
