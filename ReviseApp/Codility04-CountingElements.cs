@@ -42,6 +42,7 @@ namespace ReviseApp
             }
         }
 
+        // O(N**N)
         public int FrogRiverOne_Scalable(int X, int[] A)
         {
             var toFind = Enumerable.Range(1, X);
@@ -59,6 +60,34 @@ namespace ReviseApp
                 return -1;
             
             return r.Max();
+        }
+
+        // O(N)
+        public int FrogRiverOne_Performant(int X, int[] A)
+        {
+            var toFind = 
+                Enumerable
+                .Range(1, X)
+                .ToDictionary(keySelector: x => x, elementSelector: y => -1);
+            var leftToFindCount = X;
+            int i = 0;
+
+            foreach (var leaf in A)
+            {
+                var second = toFind[leaf];
+                if (second == -1) { 
+                    toFind[leaf] = i;
+                    
+                    if(leftToFindCount > 0)
+                        leftToFindCount--;
+                }
+                i++;
+            }
+
+            if (leftToFindCount > 0)
+                return -1;
+
+            return toFind.Max(x => x.Value);
         }
     }
 
@@ -93,6 +122,7 @@ namespace ReviseApp
         {
             // river is 5 wide 
             var input = new[] { 1, 3, 1, 4, 2, 3, 5, 4 };
+            Assert.AreEqual(6, counting.FrogRiverOne_Performant(5, input));
             Assert.AreEqual(6, counting.FrogRiverOne_Scalable(5, input));
         }
     }
