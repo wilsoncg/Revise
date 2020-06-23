@@ -19,6 +19,36 @@ namespace ReviseApp
 
     public class Codility04_CountingElements
     {
+        public int[] MaxCounters(int N, int[] A)
+        {
+            Func<int, Dictionary<int, int>> setCounters = counterValue =>
+                Enumerable
+                .Range(1, N)
+                .ToDictionary(x => x, y => counterValue);
+            Func<int, int> increase = x => x + 1;
+
+            var counters = setCounters(0);
+
+            int n = 0;
+            while(n < A.Length)
+            {
+                var ak = A[n];
+                if(ak >= 1 && ak <= N)
+                {
+                    var x = counters[ak];
+                    counters[ak] = increase(x);
+                }
+
+                if(ak == N + 1)
+                {
+                    var max = counters.Max((kv) => kv.Value);
+                    counters = setCounters(max);
+                }
+                n++;
+            }
+            return counters.Select(x => x.Value).ToArray();
+        }
+
         // https://app.codility.com/programmers/lessons/4-counting_elements/missing_integer/
         public int MissingInteger(int[] A)
         {
@@ -124,6 +154,14 @@ namespace ReviseApp
             var input = new[] { 1, 3, 1, 4, 2, 3, 5, 4 };
             Assert.AreEqual(6, counting.FrogRiverOne_Performant(5, input));
             Assert.AreEqual(6, counting.FrogRiverOne_Scalable(5, input));
+        }
+
+        [TestMethod]
+        public void MaxCountersAreCorrect()
+        {
+            var input = new[] { 3, 4, 4, 6, 1, 4, 4 };
+
+            CollectionAssert.AreEqual(new[] { 3, 2, 2, 4, 2 }, counting.MaxCounters(5, input));
         }
     }
 }
