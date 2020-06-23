@@ -40,6 +40,9 @@ namespace ReviseApp
 
                 if (ak >= 1 && ak <= N)
                 {
+                    if (counters[ak] < max)
+                        counters[ak] = max;
+
                     var x = counters[ak];
                     var counter = increase(x);
                     counters[ak] = counter;
@@ -50,11 +53,10 @@ namespace ReviseApp
                 if(ak == N + 1)
                 {
                     max = runningMax;
-                    counters = setCounters(max);
                 }
                 n++;
             }
-            return counters.Select(x => x.Value).ToArray();
+            return counters.Select(x => x.Value < max ? max : x.Value).ToArray();
         }
 
         // https://app.codility.com/programmers/lessons/4-counting_elements/missing_integer/
@@ -188,10 +190,11 @@ namespace ReviseApp
         public void MaxCounters_FromSample()
         {
             var input = new[] { 3, 4, 4, 6, 1, 4, 4 };
+            var r = counting.MaxCounters(5, input);
 
             CollectionAssert.AreEqual(
                 new[] { 3, 2, 2, 4, 2 }, 
-                counting.MaxCounters(5, input));
+                r);
         }
 
         IEnumerable<int> Generate(int n, int maxValue)
