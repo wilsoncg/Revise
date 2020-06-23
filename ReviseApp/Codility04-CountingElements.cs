@@ -93,7 +93,7 @@ namespace ReviseApp
         {
             // river is 5 wide 
             var input = new[] { 1, 3, 1, 4, 2, 3, 5, 4 };
-            Assert.AreEqual(6, counting.FrogRiverOne(5, input));
+            Assert.AreEqual(6, counting.FrogRiverOne_Scalable(5, input));
         }
     }
 }
