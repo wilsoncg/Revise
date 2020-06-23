@@ -1,8 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ReviseApp
@@ -26,6 +28,8 @@ namespace ReviseApp
                 .Range(1, N)
                 .ToDictionary(x => x, y => counterValue);
             Func<int, int> increase = x => x + 1;
+            var max = 0;
+            var runningMax = 0;
 
             var counters = setCounters(0);
 
@@ -33,15 +37,19 @@ namespace ReviseApp
             while(n < A.Length)
             {
                 var ak = A[n];
-                if(ak >= 1 && ak <= N)
+
+                if (ak >= 1 && ak <= N)
                 {
                     var x = counters[ak];
-                    counters[ak] = increase(x);
+                    var counter = increase(x);
+                    counters[ak] = counter;
+
+                    runningMax = counter > runningMax ? counter : runningMax;
                 }
 
                 if(ak == N + 1)
                 {
-                    var max = counters.Max((kv) => kv.Value);
+                    max = runningMax;
                     counters = setCounters(max);
                 }
                 n++;
@@ -157,11 +165,84 @@ namespace ReviseApp
         }
 
         [TestMethod]
-        public void MaxCountersAreCorrect()
+        public void MaxCounters_AllZero()
+        {
+            var input = new[] { 4, 4, 4 };
+
+            CollectionAssert.AreEqual(
+                new[] { 0, 0, 0, },
+                counting.MaxCounters(3, input));
+        }
+
+        [TestMethod]
+        public void MaxCounters_small()
+        {
+            var input = new[] { 2, 1, 1, 2, 1 };
+
+            CollectionAssert.AreEqual(
+                new[] { 3 }, 
+                counting.MaxCounters(1, input));
+        }
+
+        [TestMethod]
+        public void MaxCounters_FromSample()
         {
             var input = new[] { 3, 4, 4, 6, 1, 4, 4 };
 
-            CollectionAssert.AreEqual(new[] { 3, 2, 2, 4, 2 }, counting.MaxCounters(5, input));
+            CollectionAssert.AreEqual(
+                new[] { 3, 2, 2, 4, 2 }, 
+                counting.MaxCounters(5, input));
+        }
+
+        IEnumerable<int> Generate(int n, int maxValue)
+        {
+            var random = new Random();
+            for(int i = 1; i < n; i ++)
+            {
+                yield return random.Next(maxValue);
+            }
+        }
+
+        [TestMethod]
+        public void MaxCountersIsPerformant_For_10_000_CounterOperations()
+        {
+            var N = 100_000;
+            var input = Enumerable.Range(1, N).ToArray();
+            int n = 0;
+            foreach(var i in input)
+            {
+                if (i % 10 == 0)
+                    input[n] = N + 1;
+
+                n++;
+            }
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var result = counting.MaxCounters(N, input);
+            stopwatch.Stop();
+
+            Assert.IsTrue(stopwatch.Elapsed.TotalSeconds < 6);
+        }
+
+        [TestMethod]
+        public void MaxCountersIsPerformant_For_3_000_CounterOperations()
+        {
+            var N = 100_000;
+            var input = Enumerable.Range(1, N).ToArray();
+            int n = 0;
+            foreach (var i in input)
+            {
+                if (i % 30 == 0)
+                    input[n] = N + 1;
+
+                n++;
+            }
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var result = counting.MaxCounters(N, input);
+            stopwatch.Stop();
+
+            Assert.IsTrue(stopwatch.Elapsed.TotalSeconds < 4);
         }
     }
 }
