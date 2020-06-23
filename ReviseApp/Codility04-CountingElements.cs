@@ -21,6 +21,17 @@ namespace ReviseApp
 
     public class Codility04_CountingElements
     {
+        public int PermCheck(int[] A)
+        {
+            var notPerm = 
+                Enumerable
+                .Range(1, A.Length)
+                .Except(A)
+                .Any() ? true : false;
+
+            return notPerm ? 0 : 1;
+        }
+
         public int[] MaxCounters(int N, int[] A)
         {
             Func<int, Dictionary<int, int>> setCounters = counterValue =>
@@ -164,6 +175,18 @@ namespace ReviseApp
             var input = new[] { 1, 3, 1, 4, 2, 3, 5, 4 };
             Assert.AreEqual(6, counting.FrogRiverOne_Performant(5, input));
             Assert.AreEqual(6, counting.FrogRiverOne_Scalable(5, input));
+        }
+
+        [TestMethod]
+        public void PermCheck_IsPermutation()
+        {
+            Assert.AreEqual(1, counting.PermCheck(new[] { 4, 1, 3, 2 }));
+        }
+
+        [TestMethod]
+        public void PermCheck_IsNotPermutation()
+        {
+            Assert.AreEqual(0, counting.PermCheck(new[] { 4, 1, 3 }));
         }
 
         [TestMethod]
