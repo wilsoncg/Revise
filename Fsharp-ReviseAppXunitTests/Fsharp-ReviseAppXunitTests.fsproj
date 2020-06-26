@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Codility05-PrefixSumsTests.fs" />
     <Compile Include="Codility02-OddOccurencesTests.fs" />
     <Compile Include="Codility99-PolygonConcavityIndexTests.fs" />
     <Compile Include="Program.fs" />

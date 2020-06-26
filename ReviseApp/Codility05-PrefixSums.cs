@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -88,14 +89,21 @@ namespace ReviseApp
 
                     if (p == q)
                         return impactFactor(dna[p]);
-                    if (countNucleobases[0, q] - countNucleobases[0, p] > 0)
-                        return impactFactor(bases[0]);
-                    if (countNucleobases[1, q] - countNucleobases[1, p] > 0)
-                        return impactFactor(bases[1]);
-                    if (countNucleobases[2, q] - countNucleobases[2, p] > 0)
-                        return impactFactor(bases[2]);
-                    if (countNucleobases[3, q] - countNucleobases[3, p] > 0)
-                        return impactFactor(bases[3]);
+
+                    for(var bIndex = 0; bIndex < bases.Length; bIndex++)
+                    {
+                        var countAtP = countNucleobases[bIndex, p];
+                        var countAtQ = countNucleobases[bIndex, q];
+                        
+                        if (p == 0 && countAtQ > 0)
+                            return impactFactor(bases[bIndex]);
+
+                        if (countAtQ - countAtP > 0 || 
+                            (p > 0 && countNucleobases[bIndex, p - 1] < countAtP))
+                        {
+                            return impactFactor(bases[bIndex]);
+                        }
+                    }
                     
                     return 0;
                 })
@@ -134,20 +142,81 @@ namespace ReviseApp
         Codility05_PrefixSums prefixSums = new Codility05_PrefixSums();
 
         [TestMethod]
-        public void GenomicRange()
+        public void GenomicRange_Naive()
         {
-            var r1 = prefixSums.GenomicRange_Naive("CAGCCTA", new[] { 2, 5, 0 }, new[] { 4, 5, 6 });
-            var r2 = prefixSums.GenomicRange_PreCompute("CAGCCTA", new[] { 2, 5, 0 }, new[] { 4, 5, 6 });
+            var r1 = prefixSums.GenomicRange_Naive(
+                "CAGCCTA", 
+                new[] { 2, 5, 0 }, 
+                new[] { 4, 5, 6 });
             CollectionAssert.AreEqual(new[] { 2, 4, 1 }, r1);
-            CollectionAssert.AreEqual(new[] { 2, 4, 1 }, r2);
         }
 
         [TestMethod]
-        public void GenomicRange_DoubleCharacterString()
+        public void GenomicRange_PreCompute()
+        {
+            var r2 = prefixSums.GenomicRange_PreCompute(
+                "CAGCCTA",
+                new[] { 2, 5, 0 },
+                new[] { 4, 5, 6 });
+            CollectionAssert.AreEqual(new[] { 2, 4, 1 }, r2, 
+                $"Expected [2,4,1] got [{string.Join(",", r2)}]");
+        }
+
+        [TestMethod]
+        public void GenomicRange_PreCompute_SimpleTests()
+        {
+            var r1 = prefixSums.GenomicRange_PreCompute(
+                "C", new[] { 0, 0, 0 }, new[] { 0, 0, 0 });
+            var r2 = prefixSums.GenomicRange_PreCompute(
+                "AA", new[] { 0, 1, 0 }, new[] { 0, 1, 1 });
+            var r3 = prefixSums.GenomicRange_PreCompute(
+                "CC", new[] { 0, 1, 0 }, new[] { 0, 1, 1 });
+            var r4 = prefixSums.GenomicRange_PreCompute(
+                "GG", new[] { 0, 1, 0 }, new[] { 0, 1, 1 });
+            var r5 = prefixSums.GenomicRange_PreCompute(
+                "TT", new[] { 0, 0, 0 }, new[] { 1, 1, 1 });
+            var r6 = prefixSums.GenomicRange_PreCompute(
+                "ATT", new[] { 0, 0, 0 }, new[] { 1, 1, 1 });
+            var r7 = prefixSums.GenomicRange_PreCompute(
+                "CAGTCAT", new[] { 0, 1, 3 }, new[] { 0, 5, 4 });
+
+            check(r1, new[] { 2, 2, 2 });
+            check(r2, new[] { 1, 1, 1 });
+            check(r3, new[] { 2, 2, 2 });
+            check(r4, new[] { 3, 3, 3 });
+            check(r5, new[] { 4, 4, 4 });
+            check(r6, new[] { 1, 1, 1 });
+            check(r7, new[] { 2, 1, 2 });
+        }
+
+        void check(int[] r, int[] er)
+        {
+            CollectionAssert.AreEqual(r, er,
+                    $"Expected [{string.Join(",", er)}] got [{string.Join(",", r)}]");
+        }
+
+        [TestMethod]
+        public void GenomicRange_Comparison()
+        {
+            var seq = "TCAGCCT";
+            var p = new[] { 2, 0, 1, 2 };
+            var q = new[] { 4, 0, 3, 2 };
+            var r1 = prefixSums.GenomicRange_Naive(seq, p ,q);
+            var r2 = prefixSums.GenomicRange_PreCompute(seq, p, q);
+
+            check(r2, r1);
+        }
+
+        [TestMethod]
+        public void GenomicRange_DoubleCharacterString_Naive()
         {
             var r1 = prefixSums.GenomicRange_Naive("AC", new[] { 0, 0, 1 }, new[] { 0, 1, 1 });
             CollectionAssert.AreEqual(new[] { 1, 1, 2 }, r1);
+        }
 
+        [TestMethod]
+        public void GenomicRange_DoubleCharacterString_PreCompute()
+        {
             var r2 = prefixSums.GenomicRange_PreCompute("AC", new[] { 0, 0, 1 }, new[] { 0, 1, 1 });
             CollectionAssert.AreEqual(new[] { 1, 1, 2 }, r2);
         }
@@ -177,7 +246,7 @@ namespace ReviseApp
             return stopwatch.Elapsed.TotalSeconds;
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void GenomicRange_ForLargeRandom_NaiveIsGreaterThan6Seconds()
         {
             var timeInSeconds = TimeGenomicRange(prefixSums.GenomicRange_Naive);
