@@ -18,10 +18,7 @@ namespace ReviseApp
                 if (numCrossings > 1_000_000_000)
                     return -1;
 
-                if (x == 0)
-                {
-                }
-                else
+                if (x == 1)
                 {
                     // distance away from swapPoint?
                     var awayfrom = index - swapPoint;
