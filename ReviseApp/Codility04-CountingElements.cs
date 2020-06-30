@@ -82,7 +82,7 @@ namespace ReviseApp
         }
 
         // https://app.codility.com/programmers/lessons/4-counting_elements/frog_river_one/
-        IEnumerable<Tuple<int, int>> WithIndex(IEnumerable<int> list)
+        IEnumerable<Tuple<T, int>> WithIndex<T>(IEnumerable<T> list)
         {
             var e = list.GetEnumerator();
             int i = 0;

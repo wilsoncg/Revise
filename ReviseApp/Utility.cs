@@ -25,6 +25,6 @@ namespace ReviseApp
             {
                 yield return nucleotides[random.Next(4)];
             }
-        }
+        }       
     }
 }

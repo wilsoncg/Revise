@@ -34,3 +34,20 @@ let ``Check GenomicRange with random input`` (size : int) =
   Prop.forAll arb (fun a -> 
    (sums.GenomicRange_PreCompute a) = (sums.GenomicRange_Naive a)
   )
+
+[<Property>]
+let ``Check PassingCars with random input of max length`` (x:int) =
+  let cars = 
+   gen {
+    let! sequence =
+     Gen.choose(0, 1)
+     |> Gen.arrayOfLength 100_000
+    return sequence
+   } |> Arb.fromGen
+  
+  let isValid num = 
+   match num with
+   | -1 -> true
+   | x when x > 0 && x < 1_000_000_000 -> true
+   | _ -> false
+  Prop.forAll cars (fun a -> isValid (sums.PassingCars a))

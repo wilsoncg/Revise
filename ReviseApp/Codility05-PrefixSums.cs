@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -11,6 +10,62 @@ namespace ReviseApp
 {
     public class Codility05_PrefixSums
     {
+        public int PassingCars(int[] A)
+        {
+            int numCrossings = 0, index = 0, swapPoint = 0;
+            foreach(var x in A)
+            {
+                if (numCrossings > 1_000_000_000)
+                    return -1;
+
+                if (x == 0)
+                {
+                }
+                else
+                {
+                    // distance away from swapPoint?
+                    var awayfrom = index - swapPoint;
+                    numCrossings += awayfrom;
+                    swapPoint++;
+                }
+                index++;
+            }
+            return numCrossings;
+        }
+
+        public int MinAvgTwoSlice(int[] A)
+        {
+            if (!A.Any())
+                return 0;
+
+            var minAvg = (A[0] + A[1]) / 2.0;
+            var minAvgPos = 0;
+
+            for(int index = 0; index < A.Length - 2; index++)
+            {
+                // Check next 2 element slice
+                if((A[index] + A[index + 1])/2.0 < minAvg)
+                {
+                    minAvg = (A[index] + A[index + 1]) / 2.0;
+                    minAvgPos = index;
+                }
+                // Check next 3 element slice
+                if((A[index] + A[index + 1] + A[index + 2]) / 3.0 < minAvg)
+                {
+                    minAvg = (A[index] + A[index + 1] + A[index + 2]) / 3.0;
+                    minAvgPos = index;
+                }
+                // Check last 2 element slice
+                if ((A[A.Length - 1] + A[A.Length - 2]) / 2.0 < minAvg)
+                {
+                    minAvg = (A[A.Length - 1] + A[A.Length - 2]) / 2.0;
+                    minAvgPos = A.Length - 2;
+                }
+            }            
+
+            return minAvgPos;
+        }
+        
         public int CountDiv(int A, int B, int K)
         {
             // [A..B] divisible by K
@@ -140,6 +195,75 @@ namespace ReviseApp
     public class Codility05_PrefixSumsTests
     {
         Codility05_PrefixSums prefixSums = new Codility05_PrefixSums();
+
+        [TestMethod]
+        public void PassingCars_Sample()
+        {
+            var r = prefixSums.PassingCars(new[] { 0, 1, 0, 1, 1 });
+            Assert.AreEqual(5, r);
+        }
+
+        [TestMethod]
+        public void PassingCars_AllEast()
+        {
+            var r = prefixSums.PassingCars(new[] { 0, 0, 0 });
+            Assert.AreEqual(0, r);
+        }
+
+        [TestMethod]
+        public void PassingCars_2East_1West()
+        {
+            var r = prefixSums.PassingCars(new[] { 0, 0, 1 });
+            Assert.AreEqual(2, r);
+        }
+
+        [TestMethod]
+        public void PassingCars_1East_1West()
+        {
+            var r = prefixSums.PassingCars(new[] { 0, 1, 0 });
+            Assert.AreEqual(1, r);
+        }
+
+        [TestMethod]
+        public void PassingCars_1East_2West()
+        {
+            var r = prefixSums.PassingCars(new[] { 0, 1, 1 });
+            Assert.AreEqual(2, r);
+        }
+
+        [TestMethod]
+        public void PassingCars_1East_3West()
+        {
+            var r = prefixSums.PassingCars(new[] { 0, 1, 1, 1 });
+            Assert.AreEqual(3, r);
+        }
+
+        [TestMethod]
+        public void PassingCars_2East_2West_Staggered()
+        {
+            var r = prefixSums.PassingCars(new[] { 0, 1, 0, 1 });
+            Assert.AreEqual(3, r);
+        }
+
+        [TestMethod]
+        public void PassingCars_WestFirst()
+        {
+            var r1 = prefixSums.PassingCars(new[] { 1, 0, 0 });
+            var r2 = prefixSums.PassingCars(new[] { 1, 1, 0 });
+            var r3 = prefixSums.PassingCars(new[] { 1, 1, 1 });
+            var r4 = prefixSums.PassingCars(new[] { 1, 0, 1 });
+            Assert.AreEqual(0, r1);
+            Assert.AreEqual(0, r2);
+            Assert.AreEqual(0, r3);
+            Assert.AreEqual(1, r4);
+        }
+
+        [TestMethod]
+        public void AvgTwoSlice()
+        {
+            var r = prefixSums.MinAvgTwoSlice(new[] { 4, 2, 2, 5, 1, 5, 8 });
+            Assert.AreEqual(1, r);
+        }
 
         [TestMethod]
         public void GenomicRange_Naive()
