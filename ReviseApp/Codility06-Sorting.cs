@@ -9,6 +9,15 @@ namespace ReviseApp
 {
     public class Codility06_Sorting
     {
+        public int MaxProductOfThree(int[] A)
+        {
+            var sorted = A.OrderByDescending(a => a).ToArray();
+            
+            return Math.Max(
+                sorted[0] * sorted[1] * sorted[2], 
+                sorted[0] * sorted[A.Length - 1] * sorted[A.Length -2]);
+        }
+
         public int Distinct(int[] A)
         {
             var d = new Dictionary<int, bool>();
@@ -42,6 +51,33 @@ namespace ReviseApp
 
             Assert.AreEqual(3, r);
             Assert.AreEqual(3, r1);
+        }
+
+        [TestMethod]
+        public void MaxProductOfThree_SampleTest()
+        {
+            var input = new[] { -3, 1, 2, -2, 5, 6 };
+            var r1 = sorting.MaxProductOfThree(input);
+
+            Assert.AreEqual(60, r1);
+        }
+
+        [TestMethod]
+        public void MaxProductOfThree_Simple1()
+        {
+            var input = new[] { -5, 5, -5, 4 };
+            var r1 = sorting.MaxProductOfThree(input);
+
+            Assert.AreEqual(125, r1);
+        }
+
+        [TestMethod]
+        public void MaxProductOfThree_Simple2()
+        {
+            var input = new[] { -5, 4, -5, 5 };
+            var r1 = sorting.MaxProductOfThree(input);
+
+            Assert.AreEqual(-5*-5*5, r1);
         }
     }
 }
