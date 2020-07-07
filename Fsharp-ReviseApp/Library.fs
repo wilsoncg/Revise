@@ -23,6 +23,19 @@ module Library =
         List.partition(fun f -> f <= x) 
          xs |> fun (ys,zs) -> qsortList(ys) @ x :: qsortList(zs)
 
+ // https://stackoverflow.com/questions/33161244/in-f-is-it-possible-to-have-a-tryparse-function-that-infers-the-target-type/
+ let inline tryParseWithDefault 
+     defaultVal 
+     text 
+     : ^a when ^a : (static member TryParse : string * ^a byref -> bool) 
+     = 
+        let r = ref defaultVal
+        if (^a : (static member TryParse: string * ^a byref -> bool) (text, &r.contents)) 
+        then !r 
+        else defaultVal
+
+ let d = tryParseWithDefault System.DateTime.MinValue "07-07-2020 23:59:59" 
+
 type FizzBuzzGenerator() =
     member __.Apply (list:seq<int>) =
      let test n =
