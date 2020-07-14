@@ -21,14 +21,19 @@ namespace ReviseApp
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Press Escape (Esc) key to quit. {0}", Environment.NewLine);
-            Console.WriteLine("(R)un Examples");
-            Console.WriteLine("(T)imer Example");
+            Action menu = () =>
+            {
+                Console.WriteLine("Press Escape (Esc) key to quit. {0}", Environment.NewLine);
+                Console.WriteLine("(R)un Examples");
+                Console.WriteLine("(T)imer Example");
+                Console.WriteLine("(M)anualResetEvent Example");
+            };      
 
             ConsoleKeyInfo cki;
             Console.TreatControlCAsInput = true;
             do
             {
+                menu();
                 cki = Console.ReadKey(true);
                 if (cki.Key == ConsoleKey.R)
                 {
@@ -37,6 +42,10 @@ namespace ReviseApp
                 if (cki.Key == ConsoleKey.T)
                 {
                     new Program().TimerExample();
+                }
+                if (cki.Key == ConsoleKey.M)
+                {
+                    new MRE_example().Event();
                 }
                 if (cki.Key == ConsoleKey.Escape)
                 {
@@ -132,5 +141,27 @@ namespace ReviseApp
         public int Id { get; set; }
         public string Value { get; set; }
         public bool IsFromDatabase { get; set; }
+    }
+
+    public class MRE_example
+    {
+        public static ManualResetEvent mre = new ManualResetEvent(false);
+
+        public void Event()
+        {
+            Console.WriteLine("Ready");
+            Console.Read();
+            
+            new Thread(() => {
+                Console.WriteLine("Sleep");
+                Thread.Sleep(2000);
+                Console.WriteLine("Set");
+                mre.Set(); 
+            }).Start();
+
+            Console.WriteLine("Waiting");
+            mre.WaitOne();
+            Console.WriteLine("Continue");
+        }
     }
 }
