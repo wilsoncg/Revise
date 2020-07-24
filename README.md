@@ -112,3 +112,5 @@ Write an efficient algorithm for the following assumptions:
   - [Arbitrary Version instances - blog.ploeh.dk](https://blog.ploeh.dk/2014/03/11/arbitrary-version-instances-with-fscheck/)
   - [Roman numerals via property based tdd - blog.ploeh.dk](https://blog.ploeh.dk/2016/06/28/roman-numerals-via-property-based-tdd/)
   - [Property based testing talk code samples - Scott Wlaschin](https://github.com/swlaschin/PropBasedTestingTalk)
+- **Async programming**
+  - [Stephen Toub blog posts](https://devblogs.microsoft.com/pfxteam/author/toub/)
