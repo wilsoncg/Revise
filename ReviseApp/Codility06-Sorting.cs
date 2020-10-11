@@ -132,9 +132,9 @@ namespace ReviseApp
                     var r = v;
                     var q = s.list.ElementAt(s.i + 1);
                     var p = s.list.ElementAt(s.i + 2);
-                    if (q.value + p.value > r.value &&
-                        q.value + r.value > p.value &&
-                        r.value + p.value > q.value)
+                    if ((long)q.value + (long)p.value > (long)r.value &&
+                        (long)q.value + (long)r.value > (long)p.value &&
+                        (long)r.value + (long)p.value > (long)q.value)
                         s.result.Add(v);
 
                     s.i += 1;
@@ -249,6 +249,15 @@ namespace ReviseApp
             var r = sorting.TriangleDetection(input);
 
             Assert.AreEqual(0, r);
+        }
+
+        [TestMethod]
+        public void Triangle_Detection_MaxInt_ShouldReturnOne()
+        {
+            var input = new[] { Int32.MaxValue - 2, Int32.MaxValue - 1, Int32.MaxValue };
+            var r = sorting.TriangleDetection(input);
+
+            Assert.AreEqual(1, r);
         }
     }
 }
