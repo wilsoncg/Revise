@@ -26,6 +26,23 @@ namespace ReviseApp
             }
         }
 
+        public class ValueWithIndex<T>
+        {
+            public T value { get; set; }
+            public int index { get; set; }
+        }
+
+        IEnumerable<ValueWithIndex<T>> ToValueWithIndex<T>(IEnumerable<T> list)
+        {
+            var e = list.GetEnumerator();
+            int i = 0;
+            while (e.MoveNext())
+            {
+                yield return new ValueWithIndex<T> { value = e.Current, index = i };
+                i++;
+            }
+        }
+
         public int NumberOfIntersections(int[] A)
         {            
             if (A.Length <= 1)
@@ -85,6 +102,46 @@ namespace ReviseApp
         public int Distinct_WithLinq(int[] A)
         {
             return A.Distinct().Count();
+        }
+
+        public class TriangleAccum<T>
+        {
+            public List<T> list {get; set;}
+            public List<T> result { get; set; }
+            public int i { get; set; }
+        }
+
+        public int TriangleDetection(int[] A)
+        {
+            if (A.Length < 3)
+                return 0;
+
+            var a = ToValueWithIndex<int>(A).OrderByDescending(x => x.value).ToList();
+
+            var seed = new TriangleAccum<ValueWithIndex<int>> { 
+                list = a, 
+                result = new List<ValueWithIndex<int>>(), 
+                i = 0 
+            };
+            a.Aggregate(
+                seed,
+                (s, v) => {
+                    if (s.i + 2 > s.list.Count - 1)
+                        return s;
+
+                    var r = v;
+                    var q = s.list.ElementAt(s.i + 1);
+                    var p = s.list.ElementAt(s.i + 2);
+                    if (q.value + p.value > r.value &&
+                        q.value + r.value > p.value &&
+                        r.value + p.value > q.value)
+                        s.result.Add(v);
+
+                    s.i += 1;
+                    return s; 
+                });
+
+            return seed.result.Count > 0 ? 1 : 0;
         }
     }
 
@@ -174,6 +231,24 @@ namespace ReviseApp
             var r = sorting.NumberOfIntersections(input);
 
             Assert.AreEqual(3, r);
+        }
+
+        [TestMethod]
+        public void Triangle_DetectionShouldReturnOne()
+        {
+            var input = new[] { 10, 2, 5, 1, 8, 20 };
+            var r = sorting.TriangleDetection(input);
+
+            Assert.AreEqual(1, r);
+        }
+
+        [TestMethod]
+        public void Triangle_DetectionShouldReturnZero()
+        {
+            var input = new[] { 10, 50, 5, 1 };
+            var r = sorting.TriangleDetection(input);
+
+            Assert.AreEqual(0, r);
         }
     }
 }
